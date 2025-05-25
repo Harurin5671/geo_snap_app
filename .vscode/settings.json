@@ -1,0 +1,8 @@
+{
+  "dart.flutterSdkPath": ".fvm/versions/3.32.0",
+  "cSpell.language": "en,es-ES",
+  "cSpell.words": [
+    "sqlite",
+    "uuid"
+  ]
+}
