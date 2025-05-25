@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:geo_snap/config/route_constants.dart';
-import 'package:geo_snap/domain/entities/photo_entity.dart';
+import 'package:geo_snap/domain/entities/entities.dart';
 import 'package:geo_snap/core/services/navigation_service.dart';
 import 'package:geo_snap/presentation/blocs/photo/photo_bloc.dart';
 import 'package:geo_snap/presentation/models/photo_preview_data.dart';
