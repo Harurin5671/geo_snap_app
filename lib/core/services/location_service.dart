@@ -8,8 +8,11 @@ class LocationService {
   LocationService(this._permissionService);
 
   Future<Position?> getCurrentPosition() async {
-    final granted = await _permissionService.requestLocationPermission();
-    if (!granted) return null;
+    final granted = await _permissionService.isLocationPermissionGranted();
+    if (!granted) {
+      final granted = await _permissionService.requestLocationPermission();
+      if (!granted) return null;
+    }
     Position position = await Geolocator.getCurrentPosition(
       locationSettings: LocationSettings(accuracy: LocationAccuracy.best),
     );
