@@ -3,8 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:geo_snap/core/services/camera_service.dart';
-import 'package:geo_snap/core/services/location_service.dart';
+import 'package:geo_snap/core/services/services.dart';
 
 part 'camera_event.dart';
 part 'camera_state.dart';

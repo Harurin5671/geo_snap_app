@@ -1,15 +1,23 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:geo_snap/domain/entities/photo_entity.dart';
-import 'package:geo_snap/domain/repositories/photo_repository.dart';
+import 'package:geo_snap/application/photo/usecases/usecases.dart';
+import 'package:geo_snap/application/photo/results/results.dart';
+import 'package:geo_snap/domain/entities/entities.dart';
 
 part 'photo_event.dart';
 part 'photo_state.dart';
 
 class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
-  final PhotoRepository photoRepository;
-  PhotoBloc({required this.photoRepository}) : super(PhotoInitial()) {
+  final SavePhotoUseCase savePhotoUseCase;
+  final GetAllPhotosUseCase getAllPhotosUseCase;
+  final GetPhotoByIdUseCase getPhotoByIdUseCase;
+
+  PhotoBloc({
+    required this.savePhotoUseCase,
+    required this.getAllPhotosUseCase,
+    required this.getPhotoByIdUseCase,
+  }) : super(PhotoInitial()) {
     on<SavePhotoEvent>(_onSavePhoto);
     on<LoadPhotosEvent>(_onLoadPhotos);
     on<LoadPhotoByIdEvent>(_onLoadPhotoById);
@@ -21,7 +29,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
   ) async {
     emit(PhotoLoading());
     try {
-      await photoRepository.savePhoto(event.photo);
+      await savePhotoUseCase.call(event.photo);
       emit(PhotoSuccess());
     } catch (error) {
       emit(PhotoError(error.toString()));
@@ -34,12 +42,16 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
   ) async {
     emit(PhotoLoading());
     try {
-      final photos = await photoRepository.getAllPhotos();
-      if (photos.isEmpty) {
-        emit(PhotoEmpty());
-        return;
+      final result = await getAllPhotosUseCase.call();
+
+      switch (result) {
+        case NotPhotosFound():
+          emit(PhotoEmpty());
+          break;
+        case PhotosFound():
+          emit(PhotoLoaded(result.photos));
+          break;
       }
-      emit(PhotoLoaded(photos));
     } catch (error) {
       emit(PhotoError(error.toString()));
     }
@@ -52,12 +64,16 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     emit(PhotoLoading());
     await Future.delayed(const Duration(milliseconds: 300));
     try {
-      final photo = await photoRepository.getPhotoById(event.photoId);
-      if (photo == null) {
-        emit(PhotoError('Photo not found'));
-        return;
+      final result = await getPhotoByIdUseCase.call(event.photoId);
+
+      switch (result) {
+        case PhotoFound():
+          emit(PhotoDetailLoaded(result.photo));
+          break;
+        case PhotoNotFound():
+          emit(PhotoError('Photo not found'));
+          break;
       }
-      emit(PhotoDetailLoaded(photo));
     } catch (error) {
       emit(PhotoError(error.toString()));
     }
