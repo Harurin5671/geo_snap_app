@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 
 import 'package:geo_snap/core/services/services.dart';
+import 'package:geo_snap/core/services/connectivity_service.dart';
 import 'package:geo_snap/data/local/database/daos/photo_dao.dart';
 import 'package:geo_snap/data/datasources/photo_data_source.dart';
 import 'package:geo_snap/presentation/blocs/photo/photo_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:geo_snap/data/local/database/geo_snap_database.dart';
 import 'package:geo_snap/presentation/blocs/camera/camera_bloc.dart';
 import 'package:geo_snap/data/repositories/photo_repository_impl.dart';
 import 'package:geo_snap/data/datasources/photo_local_data_source.dart';
+import 'package:geo_snap/application/app_init/bloc/app_init_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -26,13 +28,22 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton(() => PermissionService());
   sl.registerLazySingleton(() => CameraService(sl()));
   sl.registerLazySingleton(() => LocationService(sl()));
+  sl.registerLazySingleton(() => ConnectivityService());
 
   // UseCases
+  // AppInit
+  // sl.registerLazySingleton(() => CheckConnectivityUseCase(sl()));
+  // Photo
   sl.registerLazySingleton(() => GetAllPhotosUseCase(sl()));
   sl.registerLazySingleton(() => GetPhotoByIdUseCase(sl()));
   sl.registerLazySingleton(() => SavePhotoUseCase(sl()));
 
   // Blocs
+  // AppInit
+  sl.registerFactory(
+    () => AppInitBloc(sl()),
+  );
+  // Camera
   sl.registerFactory(
     () => CameraBloc(cameraService: sl(), locationService: sl()),
   );

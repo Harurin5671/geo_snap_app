@@ -1,4 +1,5 @@
 class RoutePaths {
+  static const String splash = '/splash';
   static const String home = '/home';
   static const String camera = '/camera';
   static const String cameraPreview = 'preview';
@@ -7,6 +8,7 @@ class RoutePaths {
 }
 
 class RouteNames {
+  static const String splash = 'splash';
   static const String home = 'home';
   static const String camera = 'camera';
   static const String cameraPreview = 'cameraPreview';

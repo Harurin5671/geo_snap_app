@@ -48,7 +48,7 @@ class NavigationService {
   }
 
   /// Navigate back to previous route
-  void goBack() {
+  void pop() {
     if (_router.canPop()) {
       _router.pop();
     }

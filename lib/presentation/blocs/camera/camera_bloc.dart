@@ -53,7 +53,6 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     Emitter<CameraState> emit,
   ) async {
     emit(CameraInitial());
-    // add(CameraStartedEvent());
   }
 
   @override

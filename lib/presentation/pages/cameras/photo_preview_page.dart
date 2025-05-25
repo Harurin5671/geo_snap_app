@@ -72,7 +72,7 @@ class _PhotoPreviewBody extends StatelessWidget {
                       onPressed: isLoading
                           ? null
                           : () {
-                              NavigationService().goBack();
+                              NavigationService().pop();
                             },
                       icon: const Icon(Icons.close, color: Colors.white),
                       label: const Text('Cancelar'),

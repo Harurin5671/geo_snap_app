@@ -2,20 +2,23 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:geo_snap/di/injection.dart';
-import 'package:geo_snap/presentation/pages/home_page.dart';
+import 'package:geo_snap/presentation/pages/pages.dart';
 import 'package:geo_snap/presentation/blocs/photo/photo_bloc.dart';
 import 'package:geo_snap/presentation/blocs/camera/camera_bloc.dart';
 import 'package:geo_snap/presentation/models/photo_preview_data.dart';
-import 'package:geo_snap/presentation/pages/gallery/gallery_list_page.dart';
-import 'package:geo_snap/presentation/pages/cameras/photo_preview_page.dart';
-import 'package:geo_snap/presentation/pages/cameras/camera_preview_page.dart';
-import 'package:geo_snap/presentation/pages/gallery/photo_gallery_detail.dart';
 
 import 'route_constants.dart';
 
 final appRouter = GoRouter(
-  initialLocation: RoutePaths.home,
+  initialLocation: RoutePaths.splash,
   routes: [
+    GoRoute(
+      path: RoutePaths.splash,
+      name: RouteNames.splash,
+      builder: (context, state) {
+        return const SplashPage();
+      },
+    ),
     GoRoute(
       path: RoutePaths.home,
       name: RouteNames.home,

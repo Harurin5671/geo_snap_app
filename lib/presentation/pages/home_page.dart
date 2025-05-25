@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:geo_snap/config/route_constants.dart';
-import 'package:geo_snap/core/services/camera_service.dart';
-import 'package:geo_snap/core/services/location_service.dart';
-import 'package:geo_snap/core/services/navigation_service.dart';
-import 'package:geo_snap/core/services/permission_service.dart';
 
-final permissionService = PermissionService();
-final locationService = LocationService(permissionService);
-final cameraService = CameraService(permissionService);
+import 'package:geo_snap/config/route_constants.dart';
+import 'package:geo_snap/core/services/navigation_service.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('GeoSnap')),
@@ -28,13 +22,12 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               onPressed: () async {
-                // await cameraService.initializeCamera();
                 NavigationService().pushNamed(RouteNames.camera);
               },
               child: Text('Request Camera'),
             ),
           ),
-          const SizedBox(height: 12,),
+          const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: ElevatedButton(

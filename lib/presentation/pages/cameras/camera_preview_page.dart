@@ -56,6 +56,8 @@ class CameraPreviewPage extends StatelessWidget {
             );
           } else if (state is CameraCaptureInProgress) {
             return const Center(child: CircularProgressIndicator());
+          } else if (state is CameraInitial){
+            context.read<CameraBloc>().add(CameraStartedEvent());
           }
           return Center(
             child: Column(

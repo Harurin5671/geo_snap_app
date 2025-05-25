@@ -1,4 +1,6 @@
+import 'package:geo_snap/domain/failures/failure.dart';
 import 'package:geo_snap/domain/entities/photo_entity.dart';
+import 'package:geo_snap/core/utils/adapters/either_adapter.dart';
 import 'package:geo_snap/data/datasources/photo_data_source.dart';
 import 'package:geo_snap/domain/repositories/photo_repository.dart';
 
@@ -8,13 +10,26 @@ class PhotoRepositoryImpl implements PhotoRepository {
   PhotoRepositoryImpl(this.localDataSource);
 
   @override
-  Future<List<PhotoEntity>> getAllPhotos() => localDataSource.getAllPhotos();
+  Future<AppEither<Failure, List<PhotoEntity>>> getAllPhotos() {
+    return EitherAdapter.attempt(
+      () => localDataSource.getAllPhotos(),
+      mapError: (error) => EntityNotFoundFailure(error.toString()),
+    );
+  }
 
   @override
-  Future<PhotoEntity?> getPhotoById(String id) =>
-      localDataSource.getPhotoById(id);
+  Future<AppEither<Failure, PhotoEntity?>> getPhotoById(String id) {
+    return EitherAdapter.attempt(
+      () => localDataSource.getPhotoById(id),
+      mapError: (error) => EntityNotFoundFailure(error.toString()),
+    );
+  }
 
   @override
-  Future<void> savePhoto(PhotoEntity entity) =>
-      localDataSource.savePhoto(entity);
+  Future<AppEither<Failure, void>> savePhoto(PhotoEntity entity) {
+    return EitherAdapter.attempt(
+      () => localDataSource.savePhoto(entity),
+      mapError: (error) => DatabaseFailure(error.toString()),
+    );
+  }
 }
