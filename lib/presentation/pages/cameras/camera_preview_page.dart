@@ -52,11 +52,25 @@ class CameraPreviewPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                Positioned(
+                  top: 40,
+                  right: 20,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.cameraswitch,
+                      color: Colors.white,
+                      size: 32,
+                    ),
+                    onPressed: () {
+                      context.read<CameraBloc>().add(SwitchCameraEvent());
+                    },
+                  ),
+                ),
               ],
             );
           } else if (state is CameraCaptureInProgress) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is CameraInitial){
+          } else if (state is CameraInitial) {
             context.read<CameraBloc>().add(CameraStartedEvent());
           }
           return Center(

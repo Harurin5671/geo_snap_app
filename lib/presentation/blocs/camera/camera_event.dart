@@ -7,9 +7,10 @@ sealed class CameraEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class CameraStartedEvent extends CameraEvent {}
+final class CameraStartedEvent extends CameraEvent {}
 
-class TakePhotoWithLocationEvent extends CameraEvent {}
+final class TakePhotoWithLocationEvent extends CameraEvent {}
 
-class CameraResetEvent extends CameraEvent {}
-  
+final class SwitchCameraEvent extends CameraEvent {}
+
+final class CameraResetEvent extends CameraEvent {}

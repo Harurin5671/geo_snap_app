@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:geo_snap/config/route_constants.dart';
+import 'package:geo_snap/core/utils/image_utils.dart';
 import 'package:geo_snap/domain/entities/entities.dart';
 import 'package:geo_snap/core/services/navigation_service.dart';
 import 'package:geo_snap/presentation/blocs/photo/photo_bloc.dart';
@@ -17,6 +19,7 @@ class PhotoPreviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('DATA: ${data.photo.path}');
     return BlocListener<PhotoBloc, PhotoState>(
       listener: (context, state) {
         if (state is PhotoSuccess) {
@@ -56,7 +59,12 @@ class _PhotoPreviewBody extends StatelessWidget {
           children: [
             Column(
               children: [
-                Expanded(child: Image.file(File(data.photo.path))),
+                Expanded(
+                  child: Image.file(
+                    File(data.photo.path),
+                    key: ValueKey('${data.photo.path}${DateTime.now().millisecondsSinceEpoch}'),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Text(
@@ -72,6 +80,7 @@ class _PhotoPreviewBody extends StatelessWidget {
                       onPressed: isLoading
                           ? null
                           : () {
+                            deleteImageByPath(data.photo.path);
                               NavigationService().pop();
                             },
                       icon: const Icon(Icons.close, color: Colors.white),

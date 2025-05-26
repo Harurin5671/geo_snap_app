@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geo_snap/core/utils/image_utils.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,9 +19,10 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     : super(CameraInitial()) {
     on<CameraStartedEvent>(_onStarted);
     on<TakePhotoWithLocationEvent>(_onTakePhotoWithLocation);
+    on<SwitchCameraEvent>(_onSwitchCamera);
     on<CameraResetEvent>(_onCameraReset);
-    
-    add(CameraStartedEvent());
+
+    // add(CameraStartedEvent());
   }
 
   Future<void> _onStarted(
@@ -42,9 +46,34 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     final Position? position = await locationService.getCurrentPosition();
     final XFile? photo = await cameraService.takePicture();
     if (position != null && photo != null) {
-      emit(CameraCaptureSuccess(photo, position));
+      final XFile? annotated = await addMetadataToImage(
+        photo.path,
+        latitude: position.latitude,
+        longitude: position.longitude,
+      );
+      if (annotated != null) {
+        log('📸 Imagen con metadatos: ${annotated.path}');
+        emit(CameraCaptureSuccess(annotated, position));
+      } else {
+        emit(const CameraFailure('No se pudo generar imagen con metadatos'));
+      }
     } else {
-      emit(const CameraFailure('Failed to get current position or take picture'));
+      emit(
+        const CameraFailure('Failed to get current position or take picture'),
+      );
+    }
+  }
+
+  Future<void> _onSwitchCamera(
+    SwitchCameraEvent event,
+    Emitter<CameraState> emit,
+  ) async {
+    emit(CameraLoading());
+    final controller = await cameraService.switchCamera();
+    if (controller != null) {
+      emit(CameraReady(controller: controller));
+    } else {
+      emit(const CameraFailure('No se pudo cambiar de cámara'));
     }
   }
 
