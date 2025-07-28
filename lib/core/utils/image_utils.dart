@@ -82,7 +82,7 @@ Future<void> deleteImageByPath(String path) async {
       await file.delete();
       print('🗑 Imagen eliminada: $path');
     } catch (e) {
-      print('⚠️ Error al borrar imagen: $e');
+      log('⚠️ Error al borrar imagen: $e');
     }
   }
 }

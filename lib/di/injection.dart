@@ -20,18 +20,23 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton(() => GeoSnapDatabase());
   sl.registerLazySingleton(() => PhotoDao(sl()));
 
-  // DataSources y Repositories
-  sl.registerLazySingleton<PhotoDataSource>(() => PhotoLocalDataSource(sl()));
-  sl.registerLazySingleton<PhotoRepository>(() => PhotoRepositoryImpl(sl()));
-
   // Services
   sl.registerLazySingleton(() => PermissionService());
   sl.registerLazySingleton(() => CameraService(sl()));
   sl.registerLazySingleton(() => LocationService(sl()));
   sl.registerLazySingleton(() => ConnectivityService());
 
+  // DataSources y Repositories
+  sl.registerLazySingleton<PhotoDataSource>(
+    () => PhotoLocalDataSource(dao: sl()),
+  );
+  sl.registerLazySingleton<PhotoRepository>(
+    () => PhotoRepositoryImpl(localDataSource: sl(), connectivityService: sl()),
+  );
+
   // UseCases
   // AppInit
+
   // sl.registerLazySingleton(() => CheckConnectivityUseCase(sl()));
   // Photo
   sl.registerLazySingleton(() => GetAllPhotosUseCase(sl()));
@@ -40,16 +45,16 @@ Future<void> setupLocator() async {
 
   // Blocs
   // AppInit
-  sl.registerFactory(
-    () => AppInitBloc(sl()),
-  );
+  sl.registerFactory(() => AppInitBloc(sl()));
   // Camera
   sl.registerFactory(
     () => CameraBloc(cameraService: sl(), locationService: sl()),
   );
-  sl.registerFactory(() => PhotoBloc(
-    savePhotoUseCase: sl(),
-    getAllPhotosUseCase: sl(),
-    getPhotoByIdUseCase: sl(),
-  ));
+  sl.registerFactory(
+    () => PhotoBloc(
+      savePhotoUseCase: sl(),
+      getAllPhotosUseCase: sl(),
+      getPhotoByIdUseCase: sl(),
+    ),
+  );
 }

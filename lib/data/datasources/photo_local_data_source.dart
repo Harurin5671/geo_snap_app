@@ -1,12 +1,12 @@
 import 'package:geo_snap/domain/entities/photo_entity.dart';
-import 'package:geo_snap/data/mappers/photo_entity_mapper.dart';
+import 'package:geo_snap/data/local/mappers/photo_entity_mapper.dart';
 import 'package:geo_snap/data/datasources/photo_data_source.dart';
 import 'package:geo_snap/data/local/database/daos/photo_dao.dart';
 
 class PhotoLocalDataSource implements PhotoDataSource {
   final PhotoDao dao;
 
-  PhotoLocalDataSource(this.dao);
+  PhotoLocalDataSource({required this.dao});
 
   @override
   Future<List<PhotoEntity>> getAllPhotos() async {

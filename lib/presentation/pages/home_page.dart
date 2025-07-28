@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:geo_snap/config/route_constants.dart';
-import 'package:geo_snap/core/services/navigation_service.dart';
+import 'package:geo_snap/core/services/services.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:geo_snap/di/injection.dart';
-import 'package:geo_snap/config/app_router.dart';
-import 'package:geo_snap/application/app_init/bloc/app_init_bloc.dart';
+import 'bootstrap.dart';
+import 'di/injection.dart';
+import 'config/app_router.dart';
+import 'application/app_init/bloc/bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await setupLocator();
+  await bootstrap();
   runApp(const MyApp());
 }
 

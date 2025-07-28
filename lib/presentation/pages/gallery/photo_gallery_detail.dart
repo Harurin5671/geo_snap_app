@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -23,6 +24,15 @@ class PhotoGalleryDetail extends StatelessWidget {
 
           if (state is PhotoDetailLoaded) {
             final photo = state.photo;
+
+            File(photo.path).length().then((bytes) {
+              final kb = bytes / 1024;
+              final mb = kb / 1024;
+              log(
+                'Tamaño de imagen: ${mb.toStringAsFixed(2)} MB (${bytes} bytes)',
+              );
+            });
+
             return Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(

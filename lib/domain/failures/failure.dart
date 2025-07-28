@@ -17,7 +17,23 @@ final class NullValueFailure extends Failure {
 
 /// Errores de conectividad de red
 final class NetworkFailure extends Failure {
-  const NetworkFailure(super.message);
+  final int? errorCode;
+
+  const NetworkFailure(super.message, {this.errorCode});
+
+  @override
+  List<Object?> get props => [message, errorCode];
+}
+
+/// Error en la API
+final class ApiFailure extends Failure {
+  final int? statusCode;
+  final dynamic responseData;
+
+  const ApiFailure(super.message, {this.statusCode, this.responseData});
+
+  @override
+  List<Object?> get props => [message, statusCode, responseData];
 }
 
 /// Cualquier otro error imprevisto
